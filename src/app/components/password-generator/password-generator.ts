@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { LucideAngularModule, ShieldCheck } from 'lucide-angular';
 import { Header } from '../header/header';
 import { PasswordOptions } from '../password-options/password-options';
 import { PasswordDisplay } from '../password-display/password-display';
-import { PasswordOptionsModel} from '../../models/password-options.model';
+import { PasswordOptionsModel } from '../../models/password-options.model';
 import { Password } from '../../services/password';
 
 @Component({
@@ -15,23 +15,44 @@ import { Password } from '../../services/password';
 export class PasswordGenerator {
   protected readonly ShieldCheck = ShieldCheck;
 
-  password = "";
+  password = '';
   lastOptions: PasswordOptionsModel | null = null;
 
-  constructor(private passwordService: Password) {}
+  constructor(
+    private passwordService: Password,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   handleGenerate(options: PasswordOptionsModel) {
-
     this.lastOptions = options;
 
-    this.password = this.passwordService.generatePassword(options);
+    this.passwordService.generatePasswordFromApi(options.length).subscribe({
+      next: (response: any) => {
+        const apiPassword = response.random_password;
+
+        const filteredPassword =
+          this.passwordService.filterPassword(
+            apiPassword,
+            options
+          );
+
+        this.updatePassword(filteredPassword);
+      },
+      error: () => {
+        this.updatePassword(this.passwordService.generatePassword(options));
+      },
+    });
   }
 
   handleRefresh() {
     if (!this.lastOptions) {
       return;
     }
+    this.updatePassword(this.passwordService.generatePassword(this.lastOptions));
+  }
 
-    this.handleGenerate(this.lastOptions)
+  private updatePassword(password: string) {
+    this.password = password;
+    this.changeDetectorRef.detectChanges();
   }
 }

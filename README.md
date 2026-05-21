@@ -31,7 +31,7 @@ A password generator built with Angular.
 Clone the repository:
 
 ```bash
-git clone <git@github.com:halynabondar/angular-password-generator.git>
+git clone git@github.com:halynabondar/angular-password-generator.git
 ```
 
 Install dependencies:

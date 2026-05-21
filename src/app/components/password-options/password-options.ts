@@ -1,6 +1,6 @@
 import { LucideAngularModule, Settings } from 'lucide-angular';
 import { FormsModule } from '@angular/forms';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-password-options',
@@ -18,6 +18,7 @@ export class PasswordOptions {
   excludeAmbiguous  = false;
 
   @Output() generate = new EventEmitter();
+  @Input() isLoading = false;
 
   onGenerate() {
     this.generate.emit({

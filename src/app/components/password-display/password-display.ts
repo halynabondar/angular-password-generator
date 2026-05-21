@@ -1,10 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Copy, LucideAngularModule, RefreshCw } from 'lucide-angular';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-password-display',
-  imports: [LucideAngularModule, MatSnackBarModule],
+  imports: [CommonModule, LucideAngularModule, MatSnackBarModule],
   templateUrl: './password-display.html',
   styleUrl: './password-display.css',
 })
