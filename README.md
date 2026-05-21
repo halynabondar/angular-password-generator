@@ -1,6 +1,6 @@
 # Password Generator
 
-A password generator built with Angular.
+An Angular password generator with customizable options, API integration, loading states and clipboard support.
 
 ## Features
 
