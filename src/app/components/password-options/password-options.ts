@@ -20,6 +20,29 @@ export class PasswordOptions {
   @Output() generate = new EventEmitter();
   @Input() isLoading = false;
 
+  options = [
+    {
+      label: 'Include numbers',
+      helper: 'Adds digits from 0 to 9',
+      model: 'includeNumbers',
+    },
+    {
+      label: 'Include uppercase letters',
+      helper: 'Adds letters from A to Z',
+      model: 'includeUppercase',
+    },
+    {
+      label: 'Include symbols',
+      helper: 'Adds special characters like ! @ # $ %',
+      model: 'includeSymbols',
+    },
+    {
+      label: 'Exclude ambiguous characters',
+      helper: 'Avoids characters like { } [ ] / \\',
+      model: 'excludeAmbiguous',
+    },
+  ];
+
   onGenerate() {
     this.generate.emit({
       length: this.passwordLength,
