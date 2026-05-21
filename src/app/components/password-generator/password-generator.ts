@@ -3,6 +3,8 @@ import { LucideAngularModule, ShieldCheck } from 'lucide-angular';
 import { Header } from '../header/header';
 import { PasswordOptions } from '../password-options/password-options';
 import { PasswordDisplay } from '../password-display/password-display';
+import { PasswordOptionsModel} from '../../models/password-options.model';
+import { Password } from '../../services/password';
 
 @Component({
   selector: 'app-password-generator',
@@ -14,34 +16,15 @@ export class PasswordGenerator {
   protected readonly ShieldCheck = ShieldCheck;
 
   password = "";
-  lastOptions: any = null;
+  lastOptions: PasswordOptionsModel | null = null;
 
-  handleGenerate(options: any) {
+  constructor(private passwordService: Password) {}
+
+  handleGenerate(options: PasswordOptionsModel) {
+
     this.lastOptions = options;
 
-    let chars = 'abcdefghijklmnopqrstuvwxyz';
-
-    if (options.includeUppercase) {
-      chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    }
-    if (options.includeNumbers) {
-      chars += '0123456789';
-    }
-    if (options.includeSymbols) {
-      chars += '!@#$%^&*';
-    }
-    if (options.excludeAmbiguous) {
-      chars = chars.replace(/[{}[\]()\/\\",;:<>]/g, '');
-    }
-    let generatedPassword = '';
-
-    for (let i = 0; i < options.length; i++) {
-      const randomIndex = Math.floor(
-        Math.random() * chars.length
-      );
-      generatedPassword += chars[randomIndex];
-    }
-    this.password = generatedPassword;
+    this.password = this.passwordService.generatePassword(options);
   }
 
   handleRefresh() {
