@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Copy, LucideAngularModule, RefreshCw } from 'lucide-angular';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
@@ -12,15 +12,23 @@ export class PasswordDisplay {
   protected readonly RefreshCw = RefreshCw;
   protected readonly Copy = Copy;
 
-  password = 'X9!pL#m7Q@kR3$tZ';
+  @Input() password = '';
+  @Output() refresh = new EventEmitter<void>();
+
+  onRefresh() {
+    this.refresh.emit();
+  }
 
   constructor(private snackBar: MatSnackBar) {}
 
   copyPassword() {
+    if (!this.password) {
+      return;
+    }
     navigator.clipboard.writeText(this.password);
 
-    this.snackBar.open('Copied to clipboard', 'Close', {
+    this.snackBar.open('Password copied!', 'Close', {
       duration: 3000,
-    })
+    });
   }
 }
