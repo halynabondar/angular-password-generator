@@ -17,6 +17,7 @@ export class PasswordGenerator {
 
   password = '';
   lastOptions: PasswordOptionsModel | null = null;
+  isLoading = false;
 
   constructor(
     private passwordService: Password,
@@ -25,6 +26,7 @@ export class PasswordGenerator {
 
   handleGenerate(options: PasswordOptionsModel) {
     this.lastOptions = options;
+    this.isLoading = true;
 
     this.passwordService.generatePasswordFromApi(options.length).subscribe({
       next: (response: any) => {
@@ -37,9 +39,13 @@ export class PasswordGenerator {
           );
 
         this.updatePassword(filteredPassword);
+        this.isLoading = false;
+        this.changeDetectorRef.detectChanges();
       },
       error: () => {
         this.updatePassword(this.passwordService.generatePassword(options));
+        this.isLoading = false;
+        this.changeDetectorRef.detectChanges();
       },
     });
   }
